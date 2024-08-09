@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create New Student</title>
+    <link rel="stylesheet" href="../stylesheets/dashboard.css" />
+    <link
+      rel="shortcut icon"
+      href="https://w7.pngwing.com/pngs/604/618/png-transparent-larsen-toubro-limited-mmh-architectural-engineering-business-l-t-hydrocarbon-engineering-business-blue-text-trademark-thumbnail.png"
+      type="image/x-icon"
+    />
+  </head>
+
+  <body>
+    <header>Teacher Dashboard</header>
+    <main>
+      <aside>
+        <section></section>
+        <button id="create">Create</button>
+        <button id="update">Update</button>
+        <button id="retrieveRoll">Retrieve By Roll</button>
+        <button id="retrieve">Retrieve All</button>
+        <button id="delete">Delete</button>
+      </aside>
+      <div>
+        <section id="createStudent" class="formCSS">
+          <h1>This will perform the Create operation in the database</h1>
+
+          <form id="studentForm">
+            <label for="rollNumber">Roll Number:</label>
+            <input
+              type="text"
+              id="rollNumber"
+              name="rollNumber"
+              required
+            /><br />
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required /><br />
+            <div class="cnt">
+              <section>
+                <label for="dob">Date of Birth:</label>
+                <input
+                  type="date"
+                  id="dob"
+                  name="dob"
+                  min="1998-01-01"
+                  max="2005-01-01"
+                  required
+                />
+              </section>
+              <section>
+                <label for="gender">Gender:</label>
+
+                <select name="gender" id="gender" required>
+                  <option value="" disabled selected>Select</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Others">Others</option>
+                </select>
+              </section>
+            </div>
+
+            <label for="mobileNumber">Mobile Number:</label>
+            <input
+              type="number"
+              id="mobileNumber"
+              name="mobileNumber"
+              pattern="\d{10}"
+              required
+            /><br />
+
+            <label for="address">Address:</label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              minlength="10"
+              required
+            /><br />
+            <div class="cnt">
+              <section>
+                <label for="stream">Stream:</label>
+                <input type="text" id="stream" name="stream" required /><br />
+              </section>
+              <section>
+                <label for="branch">Branch:</label>
+                <select id="branch" name="branch" required>
+                  <option value="" disabled selected>Select</option>
+                  <option value="CSE">Computer Science Engineering</option>
+                  <option value="ECE">
+                    Electronics and Communication Engineering
+                  </option>
+                  <option value="EEE">
+                    Electrical and Electronic Engineering
+                  </option>
+                  <option value="CE">Civil Engineering</option>
+                  <option value="ME">Mechanical Engineering</option>
+                </select>
+              </section>
+            </div>
+
+            <button type="submit">Submit</button>
+          </form>
+
+          <script>
+            document.getElementById("create").addEventListener("click", add);
+            function add() {
+              document.getElementById("createStudent").style.display = "flex";
+              document.getElementById("updateStudent").style.display = "none";
+              document.getElementById("retrieveStudentById").style.display =
+                "none";
+              document.getElementById("retrieveAll").style.display = "none";
+              document.getElementById("DeleteByID").style.display = "none";
+            }
+
+            document
+              .getElementById("studentForm")
+              .addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const formData = {
+                  rollNumber: document.getElementById("rollNumber").value,
+                  name: document.getElementById("name").value,
+                  dob: document.getElementById("dob").value,
+                  gender: document.getElementById("gender").value,
+                  mobileNumber: document.getElementById("mobileNumber").value,
+                  address: document.getElementById("address").value,
+                  stream: document.getElementById("stream").value,
+                  branch: document.getElementById("branch").value,
+                };
+
+                fetch("/dashboard/new", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ dataObject: formData }),
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    setTimeout(() => {
+                      document.getElementById("createStudent").style.display =
+                        "None";
+                      alert("The Student is Successfully Registered");
+                    });
+                  })
+                  .catch((error) => {
+                    console.error("Error:", error);
+                    // Handle error response here (e.g., show an error message to the user)
+                  });
+              });
+          </script>
+        </section>
+        <section id="updateStudent" class="formCSS">
+          <h1>This will perform the update operation in the database</h1>
+
+          <form id="updateStudentDetails">
+            <label for="updateRollData">Roll Number :</label>
+            <input type="text" name="rollNumber" id="updateRollData" />
+            <button type="submit">Search</button>
+          </form>
+          <section id="updatedData">
+            <form id="updateStudentForm"></form>
+          </section>
+          <span id="updatedStatus"></span>
+          <script>
+            document
+              .getElementById("update")
+              .addEventListener("click", addClass);
+            function addClass() {
+              document.getElementById("createStudent").style.display = "none";
+              document.getElementById("updateStudent").style.display = "flex";
+              document.getElementById("retrieveStudentById").style.display =
+                "none";
+              document.getElementById("retrieveAll").style.display = "none";
+              document.getElementById("DeleteByID").style.display = "none";
+            }
+
+            document
+              .getElementById("updateStudentDetails")
+              .addEventListener("submit", updateStudentDetails);
+            function updateStudentDetails(event) {
+              event.preventDefault();
+              var updateRollData =
+                document.getElementById("updateRollData").value;
+              fetch(`/dashboard/getByRoll?rollNumber=${updateRollData}`, {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data) {
+                    document.getElementById(
+                      "updateStudentForm"
+                    ).innerHTML = `<label for="newName">Name:</label>
+          <input type="text" id="newName" name="name" value="${data.name}" required /><br />
+          <div class="cnt">
+            <section>
+              <label for="newDob">Date of Birth:</label>
+              <input type="date" id="newDob" name="dob" value="${data.dob}" min="1998-01-01" max="2005-01-01" required />
+            </section>
+            <section> <label for="newGender">Gender:</label>
+              <select name="gender" id="newGender" required>
+                 <option value="" disabled>Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+              </select>
+            </section>
+
+          </div>
+
+          <label for="newMobileNumber">Mobile Number:</label>
+          <input type="number" id="newMobileNumber" name="mobileNumber" value="${data.mobileNumber}"  pattern="\d{10}" required /><br />
+
+          <label for="newAddress">Address:</label>
+          <input type="text" id="newAddress" name="address" value="${data.address}" minlength="10" required /><br />
+          <div class="cnt">
+            <section>
+              <label for="newStream">Stream:</label>
+              <input type="text" id="newStream" name="stream" value="${data.stream}" required /><br />
+       </section>
+            <section> <label for="newBranch">Branch:</label>
+              <select id="newBranch" name="branch" required>
+                <option value="" disabled >Select</option>
+                <option value="CSE">Computer Science Engineering</option>
+                <option value="ECE">
+                  Electronics and Communication Engineering
+                </option>
+                <option value="EEE">
+                  Electrical and Electronic Engineering
+                </option>
+                <option value="CE">Civil Engineering</option>
+                <option value="ME">Mechanical Engineering</option>
+              </select>
+              </section></div>
+               <button type="submit">Update</button>`;
+                    document.getElementById("newGender").value = data.gender;
+                    document.getElementById("newBranch").value = data.branch;
+                  } else {
+                    setTimeout(() => {
+                      document.getElementById("updateStudentForm").innerHTML =
+                        "<h2> No Such data</h2>";
+                      setTimeout(() => {
+                        document.getElementById("updateStudentForm").innerHTML =
+                          "";
+                      }, 3000);
+                    }, 100);
+                  }
+                })
+                .catch((err) => {
+                  console;
+                });
+            }
+            document
+              .getElementById("updateStudentForm")
+              .addEventListener("submit", updateStudentRecords);
+            function updateStudentRecords(event) {
+              event.preventDefault();
+              let updateRollData =
+                document.getElementById("updateRollData").value;
+              const newData = {
+                rollNumber: updateRollData,
+                name: document.getElementById("newName").value,
+                dob: document.getElementById("newDob").value,
+                gender: document.getElementById("newGender").value,
+                mobileNumber: document.getElementById("newMobileNumber").value,
+                address: document.getElementById("newAddress").value,
+                stream: document.getElementById("newStream").value,
+                branch: document.getElementById("newBranch").value,
+              };
+              fetch("/dashboard/updateStudentData", {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ dataObject: newData }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  setTimeout(() => {
+                    alert("The Student is Successfully Updated");
+                  });
+                  setTimeout(() => {
+                    document.getElementById("updateStudent").style.display =
+                      "none";
+                  }, 2000);
+                });
+            }
+          </script>
+        </section>
+        <section id="retrieveStudentById" class="formCSS">
+          <h1>
+            This will perform the Retrival of Data By Roll Number from the
+            database
+          </h1>
+
+          <form id="retrieveForm">
+            <label for="rollNumber1">Roll Number:</label>
+            <input
+              type="text"
+              id="rollNumber1"
+              name="rollNumber"
+              required
+            /><br />
+            <button type="button" onclick="retrieveStudent()">
+              Retrieve Student
+            </button>
+          </form>
+
+          <div id="studentData">
+            <table id="tableData"></table>
+          </div>
+
+          <script>
+            document
+              .getElementById("retrieveRoll")
+              .addEventListener("click", retrive);
+            function retrive() {
+              document.getElementById("createStudent").style.display = "none";
+              document.getElementById("updateStudent").style.display = "none";
+              document.getElementById("retrieveStudentById").style.display =
+                "flex";
+              document.getElementById("retrieveAll").style.display = "none";
+              document.getElementById("DeleteByID").style.display = "none";
+            }
+
+            function retrieveStudent() {
+              const rollNumber1 = document.getElementById("rollNumber1").value;
+
+              fetch(`/dashboard/getByRoll?rollNumber=${rollNumber1}`, {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  document.getElementById("tableData").innerHTML = `<th>
+                    <tr class="trow">
+                      <td>Roll Number</td>
+                      <td>Student Name</td>
+                      <td>Date of Birth</td>
+                      <td>Gender</td>
+                      <td>Mobile Number</td>
+                      <td>Address</td>
+                      <td>Stream</td>
+                      <td>Branch</td>
+                    </tr>
+                  </th>`;
+
+                  var tabRow = document.createElement("tr");
+                  tabRow.innerHTML = `
+                <td>${data._id}</td>
+                <td>${data.name}</td>
+                <td>${data.dob}</td>
+                <td>${data.gender}</td>
+                <td>${data.mobileNumber}</td>
+                <td>${data.address}</td>
+                <td>${data.stream}</td>
+                <td>${data.branch}</td>
+              `;
+                  document.getElementById("tableData").appendChild(tabRow);
+                })
+                .catch((error) => {
+                  setTimeout(() => {
+                    document.getElementById("tableData").innerHTML += `<tr>
+                      <td colspan="8">
+                    No Student Found</td></tr>`;
+                  }, 1000);
+                });
+            }
+          </script>
+        </section>
+        <section id="retrieveAll" class="formCSS">
+          <h1>This will perform the Retrive operation in the database</h1>
+
+          <table id="tableAllData"></table>
+
+          <script>
+            document
+              .getElementById("retrieve")
+              .addEventListener("click", getAllRecords);
+
+            function getAllRecords() {
+              document.getElementById("createStudent").style.display = "none";
+              document.getElementById("updateStudent").style.display = "none";
+              document.getElementById("retrieveStudentById").style.display =
+                "none";
+              document.getElementById("retrieveAll").style.display = "flex";
+              document.getElementById("DeleteByID").style.display = "none";
+
+              fetch("/dashboard/getAllRecords", {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              })
+                .then((res) => res.json())
+                .then((data) => {
+                  document.getElementById(
+                    "tableAllData"
+                  ).innerHTML = `<th><tr class="trow">
+                      <td>Roll Number</td>
+                      <td>Student Name</td>
+                      <td>Date of Birth</td>
+                      <td>Gender</td>
+                      <td>Mobile Number</td>
+                      <td>Address</td>
+                      <td>Stream</td>
+                      <td>Branch</td>
+                    </tr>
+                  </th>`;
+                  let i = 0;
+                  for (i = 0; i < data.length; i++) {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+              <td>${data[i]._id}</td>
+              <td>${data[i].name}</td>
+              <td>${data[i].dob}</td>
+              <td>${data[i].gender}</td>
+              <td>${data[i].mobileNumber}</td>
+              <td>${data[i].address}</td>
+              <td>${data[i].stream}</td>
+              <td>${data[i].branch}</td>
+            `;
+                    document.getElementById("tableAllData").appendChild(row);
+                  }
+                  if (!data.length) {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `<td colspan="8"> No data in the Database</td>`;
+                    document.getElementById("tableAllData").appendChild(row);
+                  }
+                })
+                .catch((err) => {
+                  return err;
+                });
+            }
+          </script>
+        </section>
+        <section id="DeleteByID" class="formCSS">
+          <form id="deleteStudentByRoll">
+            <h1>This will perform the delete operation in the database</h1>
+            <label for="deleteRoll">Roll Number</label>
+            <input type="text" name="rollNumber" id="deleteRoll" />
+            <button type="submit">Delete</button>
+            <span id="deleteStatus"></span>
+          </form>
+
+          <script>
+            document
+              .getElementById("delete")
+              .addEventListener("click", deleteOp);
+            function deleteOp() {
+              document.getElementById("createStudent").style.display = "none";
+              document.getElementById("updateStudent").style.display = "none";
+              document.getElementById("retrieveStudentById").style.display =
+                "none";
+              document.getElementById("retrieveAll").style.display = "none";
+              document.getElementById("DeleteByID").style.display = "flex";
+            }
+            document
+              .getElementById("deleteStudentByRoll")
+              .addEventListener("submit", deleteStudentByRoll);
+
+            function deleteStudentByRoll(event) {
+              event.preventDefault();
+              let roll = document.getElementById("deleteRoll").value;
+              fetch(`/dashboard/deleteStudentByRoll?rollNumber=${roll}`, {
+                method: "Delete",
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  if (!data.deletedCount) {
+                    setTimeout(() => {
+                      document.getElementById("deleteStatus").innerHTML =
+                        "No Such data to delete";
+                      setTimeout(() => {
+                        document.getElementById("deleteStatus").innerHTML = "";
+                      }, 5000);
+                    }, 100);
+                  } else {
+                    setTimeout(() => {
+                      document.getElementById("deleteStatus").innerHTML =
+                        "Successfully" + roll + " Deleted From the Database.";
+                      setTimeout(() => {
+                        document.getElementById("deleteStatus").innerHTML = "";
+                      }, 5000);
+                    }, 100);
+                  }
+                });
+            }
+          </script>
+        </section>
+      </div>
+    </main>
+    <script>
+      window.onload = function () {
+        document.getElementById("create").click();
+      };
+    </script>
+  </body>
+</html>

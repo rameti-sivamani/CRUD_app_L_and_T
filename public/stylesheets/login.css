@@ -1,0 +1,98 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url("../images/Background\ 8.jpg");
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid gray;
+  padding: 20px;
+  width: fit-content;
+  height: fit-content;
+  backdrop-filter: blur(5px);
+  color: rgb(190, 181, 181);
+}
+
+form h1 {
+  color: beige;
+  margin-bottom: 30px;
+}
+
+form label {
+  font-size: 18px;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  width: 70%;
+}
+
+input,
+select {
+  width: 70%;
+  height: 40px;
+  color: #c3bbbb;
+  padding-left: 8px;
+  border-radius: 8px;
+  border: 2px inset gray;
+  background: transparent;
+}
+
+option {
+  background: rgb(21, 21, 21);
+  backdrop-filter: blur(5px);
+}
+
+input::placeholder {
+  background: transparent;
+  padding: 5px;
+}
+
+form button {
+  max-width: 60%;
+  min-width: 40%;
+  height: 35px;
+  place-self: center;
+  background: #413838;
+  border-radius: 12px;
+}
+form button:hover {
+  background: #3cb5c3;
+}
+.cnt {
+  width: 70%;
+  display: grid;
+  margin: 0;
+  grid-template-columns: 1fr 1fr;
+}
+
+.cnt section {
+  width: 100%;
+}
+
+.cnt section label,
+.cnt section input,
+.cnt section select {
+  width: 100%;
+}
+
+input#Username,
+input#Password {
+  min-width: 200px;
+}
+#loginForm {
+  padding: 60px;
+}
+#loginForm label {
+  min-width: 200px;
+}

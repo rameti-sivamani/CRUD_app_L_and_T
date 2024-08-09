@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Example Login Form</title>
+    <link rel="stylesheet" href="/stylesheets/login.css" />
+    <link
+      rel="shortcut icon"
+      href="https://w7.pngwing.com/pngs/604/618/png-transparent-larsen-toubro-limited-mmh-architectural-engineering-business-l-t-hydrocarbon-engineering-business-blue-text-trademark-thumbnail.png"
+      type="image/x-icon"
+    />
+    <style>
+      #signupbtn {
+        margin-top: 20px;
+        cursor: pointer;
+        color: rgb(224, 224, 224);
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+
+  <body>
+    <form id="loginForm">
+      <h1>Login Form</h1>
+      <label for="Username">Username:</label>
+      <input type="text" id="Username" name="Username" required /><br />
+      <label for="Password">Password:</label>
+      <input type="text" id="Password" name="Password" required /><br />
+      <button type="submit">Submit</button>
+      <a href="/signup" id="signupbtn">Register Now !</a>
+    </form>
+    <script>
+      document.getElementById("signupbtn").style.cursor = "pointer";
+
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          var usern = document.getElementById("Username").value;
+          var passwd = document.getElementById("Password").value;
+          fetch(`/login/verify`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ username: usern, password: passwd }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                window.location.href = "/dashboard";
+              } else {
+                alert(data.message);
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        });
+    </script>
+  </body>
+</html>
