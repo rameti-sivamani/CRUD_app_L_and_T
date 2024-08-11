@@ -25,5 +25,5 @@ app.use("/dashboard/new", indexRouter);
 app.use("/dashboard/updateStudentData", indexRouter);
 
 const port = 2000;
-app.listen(port,0.0.0.0, () => console.log(`This app is listening on port ${port}`));
+app.listen(port, '0.0.0.0', () => console.log(`This app is listening on port ${port}`));
 module.exports = app;
