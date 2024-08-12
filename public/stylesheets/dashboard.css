@@ -11,7 +11,7 @@ body {
   justify-content: center;
   align-items: center;
   position: relative;
-  background: #9da9aa;
+  background: #ffffff;
 }
 
 main {
@@ -19,7 +19,7 @@ main {
   width: 100%;
   display: flex;
   flex-direction: row;
-  background: #9da9aa;
+  background: transparent;
 }
 
 h1 {
@@ -32,25 +32,29 @@ h1 {
 }
 
 main aside {
-  background: #34495e;
+  background: rgb(255, 255, 255);
   width: 30%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   margin: 10px;
-  border-right: 2px solid gray;
+  box-shadow: 2px 6px 8px grey,
+    3px 7px 9px grey;
+
 }
 
 header {
   width: calc(100% - 20px);
   height: 12vh;
   margin: 10px;
-  background: #055050;
+  background: #8cd9ff;
   place-content: center;
   text-align: center;
   font-size: 24px;
-  color: snow;
+  color: rgb(20, 2, 2);
+  box-shadow: 2px 6px 8px grey,
+    3px 7px 9px grey;
 }
 
 main aside section {
@@ -70,17 +74,30 @@ main aside button {
   height: fit-content;
   padding: 8px;
   border-radius: 5px;
-  background: #2c2e42;
+  background: #e8e4e4;
+
+}
+
+main aside button:hover {
+  background: #636161;
+  color: #fffafa;
 }
 
 h2 {
   text-align: center;
+
 }
 
 main div {
-  background: #764a3b;
+  background: #ffffff;
   width: 70%;
   margin: 10px;
+
+}
+
+main div.main {
+  box-shadow: 2px 6px 8px grey,
+    3px 7px 9px grey;
 }
 
 .cnt {
@@ -88,6 +105,7 @@ main div {
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin: 0;
+
 }
 
 .cnt label,
@@ -138,6 +156,7 @@ main div {
   height: 30px;
   border-radius: 6px;
   padding: 0px 5px;
+  border: 1px inset rgb(157, 157, 157);
 }
 
 select {
@@ -154,23 +173,30 @@ select {
   height: 35px;
   margin-top: 10px;
   place-self: center;
+  background: #ffffff;
+  border: none;
+  box-shadow: 2px 6px 8px grey
+}
+
+.formCSS form:nth-child(n) button:hover {
+  background: #dcd2d2;
 }
 
 table,
 td {
   border: 1px solid #000;
-  background: #6e5454;
+  background: #ffffff;
 }
 
 .trow td {
-  background: #714d4d;
+  background: #e0d9d9;
   text-align: center;
   padding: 5px;
   font-size: clamp(8px, 2vw, 18px);
 }
 
 td {
-  font-size: clamp(8px, 2vw, 18px);
+  font-size: clamp(8px, 1vw, 20px);
   padding: 5px;
   margin: 0;
 }

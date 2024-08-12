@@ -5,7 +5,10 @@
 }
 
 body {
-  background-image: url("../images/Background\ 8.jpg");
+  background-image: url("../images/Background-wt.png");
+
+  background-position: center;
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,16 +21,16 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 2px solid gray;
+  border: 2px solid rgb(216, 216, 216);
   padding: 20px;
   width: fit-content;
   height: fit-content;
-  backdrop-filter: blur(5px);
-  color: rgb(190, 181, 181);
+  backdrop-filter: blur(30px);
+  color: rgb(72, 70, 70);
 }
 
 form h1 {
-  color: beige;
+  color: rgb(84, 84, 51);
   margin-bottom: 30px;
 }
 
@@ -41,16 +44,16 @@ input,
 select {
   width: 70%;
   height: 40px;
-  color: #c3bbbb;
+  color: #000000;
   padding-left: 8px;
   border-radius: 8px;
-  border: 2px inset gray;
+  border: 2px inset rgb(255, 255, 255);
   background: transparent;
 }
 
 option {
-  background: rgb(21, 21, 21);
-  backdrop-filter: blur(5px);
+  background: rgb(255, 255, 255);
+  backdrop-filter: blur(15px);
 }
 
 input::placeholder {
@@ -63,12 +66,17 @@ form button {
   min-width: 40%;
   height: 35px;
   place-self: center;
-  background: #413838;
-  border-radius: 12px;
+  background: #d4cece;
+  border: 1px solid rgb(210, 207, 201);
+  box-shadow: 2px 4px 6px gray;
 }
+
 form button:hover {
-  background: #3cb5c3;
+  background: #a8a8a8;
+  border: 1px solid rgb(146, 146, 146);
+
 }
+
 .cnt {
   width: 70%;
   display: grid;
@@ -90,9 +98,11 @@ input#Username,
 input#Password {
   min-width: 200px;
 }
+
 #loginForm {
   padding: 60px;
 }
+
 #loginForm label {
   min-width: 200px;
 }
